@@ -12,9 +12,45 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Junior Frontend Test</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
 </html>
+
+<script>
+  $(document).ready(function () {
+    $("#currencySelect").change(function () {
+      $("#currencySelect option")[0].innerText = JSON.parse(
+        $("#currencySelect option:selected").val()
+      ).symbol;
+    });
+    /////////////////////////////////////
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+      if (!event.target.matches(".cart-icon")) {
+        var dropdowns = document.getElementsByClassName("cart-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (
+            openDropdown.classList.contains("show") &&
+            !event.path.find(
+              (p) =>
+                p.classList &&
+                p.classList.length > 0 &&
+                p.classList[0] === "cart-content"
+            )
+          ) {
+            openDropdown.classList.remove("show");
+            document
+              .getElementsByTagName("body")[0]
+              .classList.remove("overlay");
+          }
+        }
+      }
+    };
+  });
+</script>
