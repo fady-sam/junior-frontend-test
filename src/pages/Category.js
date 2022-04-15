@@ -2,18 +2,19 @@ import React, { Component } from "react";
 import { withRouter } from "../withRouter";
 import { axiosInstance as axios } from "../axios";
 
+import CategoryBody from "../components/body/CategoryBody";
+
 export class Category extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedCategory: {},
+      products: [],
     };
   }
 
   getProducts = async (selectedCategoryName) => {
     try {
-      console.log("🚀 ~ getProducts= ~ selectedCategory", selectedCategoryName);
-
       const response = await axios.post("", {
         query: `
           query {
@@ -49,14 +50,10 @@ export class Category extends Component {
           }
         `,
       });
-      console.log(
-        "🚀 ~ getProducts= ~ response",
-        response.data.data.category.products
-      );
-      // if (response.data.data.categories) {
-      //   return this.setActiveCategory(response.data.data.categories);
-      // }
-      // return [];
+      if (response.data.data.category && response.data.data.category.products) {
+        return response.data.data.category.products;
+      }
+      return [];
     } catch (error) {
       return error;
     }
@@ -78,18 +75,28 @@ export class Category extends Component {
         selectedCategory: this.props.router.outletContext.selectedCategory,
       });
       // get products
-      await this.getProducts(
+      let products = await this.getProducts(
         this.props.router.outletContext.selectedCategory.name
       );
+      console.log("🚀 ~ componentDidUpdate ~ products", products);
+
+      this.setState({
+        products,
+      });
+
+      console.log("this.state.products :>> ", this.state.products);
     }
   }
 
   render() {
     return (
       <div>
-        {this.state.selectedCategory.name
-          ? this.state.selectedCategory.name
-          : ""}
+        <div className="category-title">
+          {this.state.selectedCategory.name
+            ? this.state.selectedCategory.name
+            : ""}
+        </div>
+        <CategoryBody products={this.state.products} />
       </div>
     );
   }

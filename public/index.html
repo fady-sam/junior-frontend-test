@@ -22,12 +22,6 @@
 
 <script>
   $(document).ready(function () {
-    $("#currencySelect").change(function () {
-      $("#currencySelect option")[0].innerText = JSON.parse(
-        $("#currencySelect option:selected").val()
-      ).symbol;
-    });
-    /////////////////////////////////////
     // Close the dropdown if the user clicks outside of it
     window.onclick = function (event) {
       if (!event.target.matches(".cart-icon")) {
