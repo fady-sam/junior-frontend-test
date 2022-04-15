@@ -90,7 +90,7 @@ export class Category extends Component {
 
   render() {
     return (
-      <div>
+      <div className="category-container">
         <div className="category-title">
           {this.state.selectedCategory.name
             ? this.state.selectedCategory.name

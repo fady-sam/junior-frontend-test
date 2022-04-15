@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "../../withRouter";
 
+import CategoryProductCard from "./CategoryProductCard";
 export class CategoryBody extends Component {
   constructor(props) {
     super(props);
@@ -14,9 +15,13 @@ export class CategoryBody extends Component {
   render() {
     return (
       <div className="category-body">
-        {this.props.products && this.props.products.length > 0
-          ? this.props.products[0].name
-          : ""}
+        {this.props.products.map((product, index) => (
+          <CategoryProductCard
+            key={product.id}
+            product={product}
+            productIndex={index}
+          />
+        ))}
       </div>
     );
   }

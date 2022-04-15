@@ -117,6 +117,7 @@ export class Header extends Component {
         <Link to="dashboard">Dashboard</Link>
       </nav> */}
         <div className="content">
+          <div className="content-overlay"></div>
           <Outlet context={{ selectedCategory: this.state.selectedCategory }} />
         </div>
       </>
