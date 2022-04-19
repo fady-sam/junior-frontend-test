@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
 import { withRouter } from "../../withRouter";
 
 export class Navigation extends Component {
@@ -11,14 +12,14 @@ export class Navigation extends Component {
     return (
       <div className="navigation-container">
         {this.props.categories.map((cat) => (
-          <span
-            to={cat.name}
+          <NavLink
+            to={cat.name === "all" ? "/" : cat.name}
             key={cat.name}
-            className={cat.active && "active"}
             onClick={() => this.props.setSelectedCategory(cat.name)}
+            style={{ textDecoration: "none" }}
           >
             {cat.name}
-          </span>
+          </NavLink>
         ))}
       </div>
     );

@@ -7,6 +7,7 @@ import { saveState } from "./store/localStorage";
 
 import Header from "./layouts/Header";
 import Category from "./pages/Category";
+import Product from "./pages/Product";
 
 store.subscribe(() => {
   saveState({
@@ -27,8 +28,8 @@ export class App extends Component {
             <Route path="/" element={<Header />}>
               <Route index element={<Category />} />
               <Route path=":categoryName" element={<Category />} />
-              {/* <Route path="teams" element={<Teams />}>
-              <Route path=":teamId" element={<Team />} />
+              <Route path=":categoryName/:productID" element={<Product />} />
+              {/* <Route path=":teamId" element={<Team />} />
               <Route path="new" element={<NewTeamForm />} />
               <Route index element={<LeagueStandings />} />
             </Route>

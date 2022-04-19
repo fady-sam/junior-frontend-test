@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { withRouter } from "../../withRouter";
 
 import cartWhite from "../../images/cart-white.png";
@@ -75,29 +76,39 @@ export class ImageSlideShow extends Component {
         <div className="slideshow-container">
           <div className="image-container">
             {this.props.gallery.map((img) => (
-              <div
-                className={`product-slides-${this.props.productIndex}`}
+              <Link
+                to={`/${this.props.category}/${this.props.productID}`}
                 key={img}
+                style={
+                  `/${this.props.category}/${this.props.productID}` ===
+                  this.props.router.location.pathname
+                    ? {
+                        pointerEvents: "none",
+                      }
+                    : {}
+                }
               >
-                <img
-                  className={this.props.outStock ? "out-stock" : ""}
-                  src={img}
-                  alt="img"
-                />
+                <div className={`product-slides-${this.props.productIndex}`}>
+                  <img
+                    className={this.props.outStock ? "out-stock" : ""}
+                    src={img}
+                    alt="img"
+                  />
 
-                {this.props.outStock && (
-                  <span className="out-stock-label">OUT OF STOCK</span>
-                )}
-
-                {!this.props.outStock && (
-                  <div className="cart">
-                    <img src={cartWhite} alt="cart" />
-                    {/* className="cart-icon"
-          onClick={() => this.toggleCart()} */}
-                  </div>
-                )}
-              </div>
+                  {this.props.outStock && (
+                    <span className="out-stock-label">OUT OF STOCK</span>
+                  )}
+                </div>
+              </Link>
             ))}
+
+            {!this.props.outStock && (
+              <div className="cart">
+                <img src={cartWhite} alt="cart" />
+                {/* className="cart-icon"
+    onClick={() => this.toggleCart()} */}
+              </div>
+            )}
 
             {this.props.gallery.length > 1 && (
               <>

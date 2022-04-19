@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { withRouter } from "../../withRouter";
 
 import { connect } from "react-redux";
@@ -11,16 +12,6 @@ export class CategoryProductCard extends Component {
     this.state = {
       amount: 0,
     };
-  }
-
-  componentDidMount = async () => {
-    this.setAmount();
-  };
-
-  async componentDidUpdate(prevProps) {
-    if (this.props.currency.label !== prevProps.currency.label) {
-      this.setAmount();
-    }
   }
 
   setAmount = () => {
@@ -40,6 +31,16 @@ export class CategoryProductCard extends Component {
     }
   };
 
+  componentDidMount = async () => {
+    this.setAmount();
+  };
+
+  async componentDidUpdate(prevProps) {
+    if (this.props.currency.label !== prevProps.currency.label) {
+      this.setAmount();
+    }
+  }
+
   render() {
     return (
       <div className="category-product-card">
@@ -48,19 +49,28 @@ export class CategoryProductCard extends Component {
           productIndex={this.props.productIndex}
           showThumbnail={false}
           outStock={!this.props.product.inStock}
+          category={this.props.product.category}
+          productID={this.props.product.id}
         />
-        <div
-          className={`name ${!this.props.product.inStock ? "out-stock" : ""}`}
+        <Link
+          to={`/${this.props.product.category}/${this.props.product.id}`}
+          style={{ textDecoration: "none" }}
         >
-          {this.props.product.name}
-        </div>
-        <div
-          className={`amount ${!this.props.product.inStock ? "out-stock" : ""}`}
-        >
-          {this.props.currency.symbol +
-            " " +
-            parseFloat(this.state.amount).toFixed(2)}
-        </div>
+          <div
+            className={`name ${!this.props.product.inStock ? "out-stock" : ""}`}
+          >
+            {this.props.product.name}
+          </div>
+          <div
+            className={`amount ${
+              !this.props.product.inStock ? "out-stock" : ""
+            }`}
+          >
+            {this.props.currency.symbol +
+              " " +
+              parseFloat(this.state.amount).toFixed(2)}
+          </div>
+        </Link>
       </div>
     );
   }

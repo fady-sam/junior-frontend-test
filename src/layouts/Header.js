@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, NavLink } from "react-router-dom";
 import { withRouter } from "../withRouter";
 import logo from "../images/a-logo.png";
 import { axiosInstance as axios } from "../axios";
@@ -106,9 +106,9 @@ export class Header extends Component {
             setSelectedCategory={this.setSelectedCategory}
           />
           <div className="logo-container">
-            <Link to="/" onClick={() => this.setSelectedCategory("all")}>
+            <NavLink to="/" onClick={() => this.setSelectedCategory("all")}>
               <img src={logo} alt="logo" className="logo" />
-            </Link>
+            </NavLink>
           </div>
           <Actions />
         </header>

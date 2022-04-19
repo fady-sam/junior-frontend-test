@@ -59,11 +59,24 @@ export class Category extends Component {
     }
   };
 
+  renderComponent = async () => {
+    this.setState({
+      selectedCategory: this.props.router.outletContext.selectedCategory,
+    });
+    // get products
+    let products = await this.getProducts(
+      this.props.router.outletContext.selectedCategory.name
+    );
+
+    this.setState({
+      products,
+    });
+
+    console.log("this.state.products :>> ", this.state.products);
+  };
+
   componentDidMount = async () => {
-    // console.log("this.props", this.props);
-    // this.setState({
-    //   selectedCategory: this.props.router.outletContext.selectedCategory,
-    // });
+    this.renderComponent();
   };
 
   async componentDidUpdate(prevProps) {
@@ -71,20 +84,7 @@ export class Category extends Component {
       this.props.router.outletContext.selectedCategory.name !==
       prevProps.router.outletContext.selectedCategory.name
     ) {
-      this.setState({
-        selectedCategory: this.props.router.outletContext.selectedCategory,
-      });
-      // get products
-      let products = await this.getProducts(
-        this.props.router.outletContext.selectedCategory.name
-      );
-      console.log("🚀 ~ componentDidUpdate ~ products", products);
-
-      this.setState({
-        products,
-      });
-
-      console.log("this.state.products :>> ", this.state.products);
+      this.renderComponent();
     }
   }
 
