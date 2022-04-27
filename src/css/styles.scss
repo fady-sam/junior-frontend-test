@@ -3,8 +3,17 @@
   src: local("Raleway"), url(../fonts/Raleway-Regular.ttf) format("truetype");
 }
 :root {
-  --font-stack: -apple-system, BlinkMacSystemFont, "Raleway", "Segoe UI",
-    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+  --font-stack: -apple-system, BlinkMacSystemFont, "Raleway", "Roboto",
+    "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  --font-stack2: -apple-system, BlinkMacSystemFont, "Roboto Condensed",
+    "Raleway", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-stack3: -apple-system, BlinkMacSystemFont, "Source Sans Pro",
+    "Roboto Condensed", "Raleway", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell",
+    "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-stack4: -apple-system, BlinkMacSystemFont, "Roboto", "Raleway",
+    "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
     "Helvetica Neue", sans-serif;
   --size-xs: 0;
   --size-sm: 600px;
@@ -14,6 +23,8 @@
 
   --c-primary: #5ece7b;
   --c-text: #1d1f22;
+  --c--att-text: #292929;
+  --c--swatch-border: #5ece7b;
   --c-text-out: #8d8f9a;
 }
 
@@ -252,6 +263,7 @@ select {
           border-radius: 0 3px 3px 0;
           user-select: none;
           -webkit-user-select: none;
+          // box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%), 0 1px 1px 0 rgb(0 0 0 / 19%);
         }
 
         /* Position the "next button" to the right */
@@ -356,7 +368,8 @@ select {
     }
 
     .product-details {
-      color: var(--font-stack);
+      justify-self: center;
+
       .brand {
         font-weight: 600;
         font-size: 30px;
@@ -367,8 +380,10 @@ select {
         font-size: 30px;
         line-height: 27px;
         margin-top: 16px;
+        margin-top: 16px;
       }
       .price {
+        font-family: var(--font-stack2);
         font-weight: 700;
         font-size: 18px;
         line-height: 18px;
@@ -380,7 +395,84 @@ select {
         line-height: 18px;
         margin-top: 10px;
       }
+      .Attributes {
+        .section {
+          margin-top: 20px;
+
+          .label {
+            padding-top: 24px;
+            text-transform: uppercase;
+            font-family: var(--font-stack2);
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 18px;
+          }
+          .swatch {
+            font-family: var(--font-stack3);
+            display: flex;
+            align-items: center;
+            div {
+              display: grid;
+              margin: 8px 12px 0 0;
+              padding: 3px;
+              cursor: pointer;
+            }
+            div span {
+              width: 32px;
+              height: 32px;
+              box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%),
+                0 1px 1px 0 rgb(0 0 0 / 19%);
+            }
+            div.selected {
+              border: 1px solid var(--c--swatch-border);
+            }
+          }
+          .text {
+            font-family: var(--font-stack3);
+            display: flex;
+            div {
+              margin: 8px 12px 0 0;
+              font-weight: 400;
+              font-size: 16px;
+              line-height: 18px;
+              color: var(--c--att-text);
+              border: 2px solid var(--c-text);
+              box-sizing: border-box;
+              background: white;
+              cursor: pointer;
+              width: 70px;
+              height: 45px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+            div.selected {
+              background: var(--c-text);
+              color: white;
+            }
+          }
+        }
+      }
+      .cart-btn {
+        font-family: var(--font-stack);
+        padding: 16px 32px;
+        width: 100%;
+        min-width: 292px;
+        height: 52px;
+        background: var(--c-primary);
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 19px;
+        color: white;
+        border: none;
+        margin-top: 20px;
+        cursor: pointer;
+      }
+      .cart-btn:disabled {
+        cursor: not-allowed;
+      }
       .description {
+        font-family: var(--font-stack4);
         font-weight: 400;
         font-size: 16px;
         line-height: 26px;

@@ -3,7 +3,7 @@ import { withRouter } from "../../withRouter";
 import { axiosInstance as axios } from "../../axios";
 
 import { connect } from "react-redux";
-import { SET_CURRENCY } from "../../store/actions";
+import { SET_CURRENCY, GET_TOTALS } from "../../store/actions";
 
 export class Currencies extends Component {
   constructor(props) {
@@ -48,6 +48,7 @@ export class Currencies extends Component {
         currency: currencies[0],
       });
       this.props.setCurrency(currencies[0]);
+      this.props.getTotal();
     } else if (this.props.currency) {
       this.setState({
         currency: this.props.currency,
@@ -160,6 +161,7 @@ export class Currencies extends Component {
         currency: currency,
       });
       this.props.setCurrency(currency);
+      this.props.getTotal();
     }
   };
 
@@ -195,6 +197,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({
         type: SET_CURRENCY,
         payload: currency,
+      });
+    },
+    getTotal: () => {
+      dispatch({
+        type: GET_TOTALS,
       });
     },
   };

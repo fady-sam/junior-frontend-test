@@ -5,7 +5,6 @@ import logo from "../images/a-logo.png";
 import { axiosInstance as axios } from "../axios";
 
 import { connect } from "react-redux";
-import { ADD_ITEM } from "../store/actions";
 
 import Navigation from "../components/header/Navigation";
 import Actions from "../components/header/Actions";
@@ -30,7 +29,6 @@ export class Header extends Component {
             }
           `,
       });
-      // this.props.addItem();
       if (response.data.data.categories) {
         return this.setActiveCategory(response.data.data.categories);
       }
@@ -89,7 +87,6 @@ export class Header extends Component {
 
   componentDidMount = async () => {
     let categories = await this.getAllCategories();
-    // this.props.addItem();
     this.setState({
       categories,
     });
@@ -132,19 +129,7 @@ function mapStateToProps(store) {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   // console.log("🚀 ~ mapDispatchToProps ~ ownProps", ownProps);
-  return {
-    addItem: () =>
-      dispatch({
-        type: ADD_ITEM,
-        payload: {
-          id: 2,
-          title: "Google pixel Max",
-          price: 399.99,
-          img: "shorturl.at/ajkq9",
-          amount: 1,
-        },
-      }),
-  };
+  return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header));

@@ -1,6 +1,5 @@
 import {
   SET_CURRENCY,
-  ADD_ITEM,
   INCREASE,
   DECREASE,
   REMOVE,
@@ -9,26 +8,19 @@ import {
 } from "./actions";
 
 function reducer(state, action) {
+  let cart = [...state.cart];
+
   if (action.type === SET_CURRENCY) {
-    console.log("action.payload :>> ", action.payload);
-    console.log({
-      ...state,
-      currency: action.payload,
-    });
     return {
       ...state,
+      cart: state.cart.map((item) => {
+        item.price = getPrice(item.prices, action.payload);
+        return item;
+      }),
       currency: action.payload,
     };
   }
-  if (action.type === ADD_ITEM) {
-    return {
-      ...state,
-      cart:
-        !state.cart || state.cart.length === 0
-          ? [action.payload]
-          : [...state.cart, action.payload],
-    };
-  }
+
   if (action.type === DECREASE) {
     return {
       ...state,
@@ -44,15 +36,30 @@ function reducer(state, action) {
       }),
     };
   }
+
   if (action.type === INCREASE) {
+    const increasePrice = getPrice(action.payload.prices, state.currency);
+
+    if (!cart || cart.length === 0) {
+      action.payload.price = increasePrice;
+      cart.push(action.payload);
+    } else {
+      let increaseItem = cart.findIndex(
+        (item) =>
+          item.id === action.payload.id &&
+          equals(item.selectedAttributes, action.payload.selectedAttributes)
+      );
+      if (increaseItem !== -1) {
+        cart[increaseItem].amount++;
+      } else {
+        action.payload.price = increasePrice;
+        cart.push(action.payload);
+      }
+    }
+
     return {
       ...state,
-      cart: state.cart.map((item) => {
-        if (item.id === action.payload.id) {
-          item.amount++;
-        }
-        return item;
-      }),
+      cart,
     };
   }
   if (action.type === CLEAR_CART) {
@@ -69,7 +76,7 @@ function reducer(state, action) {
       (cartTotal, cartItem) => {
         const { price, amount } = cartItem;
         cartTotal.amount += amount;
-        cartTotal.total += Math.floor(amount * price);
+        cartTotal.total += amount * price;
         return cartTotal;
       },
       { amount: 0, total: 0 }
@@ -78,5 +85,19 @@ function reducer(state, action) {
   }
   return state;
 }
+
+const equals = (a, b) => {
+  if (a === b) return true;
+  if (!a || !b || (typeof a !== "object" && typeof b !== "object"))
+    return a === b;
+  if (a.prototype !== b.prototype) return false;
+  const keys = Object.keys(a);
+  if (keys.length !== Object.keys(b).length) return false;
+  return keys.every((k) => equals(a[k], b[k]));
+};
+
+const getPrice = (prices, currency) => {
+  return prices.find((price) => price.currency.label === currency.label).amount;
+};
 
 export default reducer;

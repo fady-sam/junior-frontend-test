@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { withRouter } from "../../withRouter";
 
 import { connect } from "react-redux";
-import { SET_CURRENCY } from "../../store/actions";
+import { INCREASE, GET_TOTALS } from "../../store/actions";
+import Attributes from "./Attributes";
 
 export class ProductDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       amount: 0,
+      selectedAttributes: {},
     };
   }
 
@@ -30,13 +31,43 @@ export class ProductDetails extends Component {
     }
   };
 
+  setSelectedAttributes = (id, item) => {
+    this.setState((prevState) => ({
+      selectedAttributes: {
+        ...prevState.selectedAttributes,
+        [id]: item,
+      },
+    }));
+  };
+
+  addToCart = () => {
+    console.log("🚀 ~ addToCart");
+
+    let item = {
+      ...this.props.details,
+      selectedAttributes: this.state.selectedAttributes,
+      amount: 1,
+    };
+    console.log("🚀 ~ item", item);
+    this.props.increase(item);
+    this.props.getTotal();
+  };
+
   componentDidMount = async () => {
     this.setAmount();
+    console.log(
+      "this.state.selectedAttributes :>> ",
+      this.state.selectedAttributes
+    );
   };
 
   async componentDidUpdate(prevProps) {
     if (this.props.currency.label !== prevProps.currency.label) {
       this.setAmount();
+      console.log(
+        "this.state.selectedAttributes :>> ",
+        this.state.selectedAttributes
+      );
     }
   }
 
@@ -47,12 +78,27 @@ export class ProductDetails extends Component {
           <>
             <div className="brand">{this.props.details.brand}</div>
             <div className="name">{this.props.details.name}</div>
+            <Attributes
+              attributes={this.props.details.attributes}
+              selectedAttributes={this.state.selectedAttributes}
+              setSelectedAttributes={(id, item) =>
+                this.setSelectedAttributes(id, item)
+              }
+            />
             <div className="price">PRICE</div>
             <div className="amount">
               {this.props.currency.symbol +
                 " " +
                 parseFloat(this.state.amount).toFixed(2)}
             </div>
+            <button
+              disabled={`${!this.props.details.inStock ? "disabled" : ""}`}
+              type="submit"
+              className="cart-btn"
+              onClick={() => this.addToCart()}
+            >
+              ADD TO CART
+            </button>
             <div
               className="description"
               dangerouslySetInnerHTML={{
@@ -73,10 +119,15 @@ function mapStateToProps(store) {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setCurrency: (currency) => {
+    increase: (item) => {
       dispatch({
-        type: SET_CURRENCY,
-        payload: currency,
+        type: INCREASE,
+        payload: item,
+      });
+    },
+    getTotal: () => {
+      dispatch({
+        type: GET_TOTALS,
       });
     },
   };
